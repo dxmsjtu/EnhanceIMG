@@ -3,6 +3,33 @@
 [TOC]
 
 此代码库用于图像增强算法的探索，主要包括：低光增强、图像修复、超分辨率重建 …… 
+## 实验室部署流程
+```
+pip install -r requirements.txt
+```
+编译好基础环境后，
+
+
+右键run demo.py执行demo脚本，其中大致添加了代码注释。
+如下图所示
+
+
+
+![noises](https://cdn.nlark.com/yuque/0/2023/png/12831330/1691393677419-542d3be9-a481-4bb9-a01b-0e787c8aa26f.png
+)
+
+安装成功后的终端显示结果如下：
+![noises](https://cdn.nlark.com/yuque/0/2023/png/12831330/1691393690662-3cfde386-1509-43c8-9f55-92d365f21b42.png
+)
+
+点击run demo.py，就会出现不同方法的运行结果
+
+
+
+![noises](https://cdn.nlark.com/yuque/0/2023/png/12831330/1691394027657-b96fd442-bf55-4b48-9f41-8b1cda87c1ea.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0
+)
+
+
 
 ## 目录结构
 

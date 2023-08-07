@@ -8,9 +8,10 @@ from retinex import *
 from retinex.enhancer import *
 
 # %%
-img_bgr = cv2.imread("Madison.png")
-cv2.imshow('BGR', img_bgr)
+img_bgr = cv2.imread("Madison.png")# 读取图像文件
+cv2.imshow('BGR', img_bgr) # 显示原始图像
 
+# 转换颜色空间
 # %%
 # img_rgb = bgr2rgb(img_bgr)
 # # cv2.imshow('RGB', img_rgb)
@@ -30,6 +31,7 @@ cv2.imshow('BGR', img_bgr)
 # img_lab = bgr2lab(img_bgr)
 # # cv2.imshow('LAB', img_lab)
 
+# 添加噪声
 # %%
 # img_sp = add_sandp_noise(img_bgr)
 # # cv2.imshow("SPN", img_sp)
@@ -37,6 +39,7 @@ cv2.imshow('BGR', img_bgr)
 # img_gs = add_gaussian_noise(img_bgr)
 # cv2.imshow("GSN", img_gs)
 
+# 使用均值滤波器和中值滤波器进行图像滤波
 # %%
 # img_mn = mean_filter(img_sp, kernel_size=(3,3))
 # # cv2.imshow("MNB-3", img_mn)
@@ -47,7 +50,7 @@ cv2.imshow('BGR', img_bgr)
 # # cv2.imshow("MDB-3", img_md)
 # img_md = median_filter(img_sp, kernel_size=5)
 # # cv2.imshow("MDB-5", img_md)
-
+# 使用高斯滤波器进行图像滤波
 # %%
 # img_gf = gaussian_filter(img_bgr, kernel_size=(3,3), sigma=0)
 # cv2.imshow("GSB-3", img_gf)
@@ -57,6 +60,8 @@ cv2.imshow('BGR', img_bgr)
 # %%
 # img_bf = cv2.bilateralFilter(img_gs, d=0, sigmaColor=40, sigmaSpace=10)
 # cv2.imshow("BFX", img_bf)
+
+# 使用联合双边滤波器进行图像滤波
 
 # joint = gaussian_filter(img_bgr, kernel_size=(3,3), sigma=0)
 # img_jb = joint_bilateral_filter(img_bgr, joint, d=0, sigmaColor=40, sigmaSpace=10)
@@ -76,28 +81,29 @@ cv2.imshow('BGR', img_bgr)
 # img_clahe = contrast_limited_ahe(img_bgr, clipLimit=40.0, tileGridSize=(8,8))
 # cv2.imshow("CLAHE", img_clahe)
 
+# 多尺度Retinex
 # %%
-# config = {
-#     "sigma_list": [15, 80, 250],
-#     "G"         : 5.0,
-#     "b"         : 25.0,
-#     "alpha"     : 125.0,
-#     "beta"      : 46.0,
-#     "low_clip"  : 0.01,
-#     "high_clip" : 0.99
-# }
+config = {
+    "sigma_list": [15, 80, 250],
+    "G"         : 5.0,
+    "b"         : 25.0,
+    "alpha"     : 125.0,
+    "beta"      : 46.0,
+    "low_clip"  : 0.01,
+    "high_clip" : 0.99
+}
 
-# img_msrcr = MSRCR(
-#         img_bgr,
-#         config['sigma_list'],
-#         config['G'],
-#         config['b'],
-#         config['alpha'],
-#         config['beta'],
-#         config['low_clip'],
-#         config['high_clip']
-#     )
-# cv2.imshow("MSRCR", img_msrcr)
+img_msrcr = MSRCR(
+        img_bgr,
+        config['sigma_list'],
+        config['G'],
+        config['b'],
+        config['alpha'],
+        config['beta'],
+        config['low_clip'],
+        config['high_clip']
+    )
+cv2.imshow("MSRCR", img_msrcr)
 
 # img_amsrcr = automated_MSRCR(
 #         img_bgr,
@@ -122,7 +128,7 @@ cv2.imshow("AttnMSR+MSS", img_mss)
 
 # %%
 from matplotlib import pyplot as plt
-
+# 绘制直方图
 color = ('b','g','r')
 for i, cl in enumerate(color): 
     hist = cv2.calcHist([img_bgr], [i], None, [256], [0,256]) 
@@ -136,6 +142,6 @@ plt.show()
 
 # %%
 cv2.waitKey()
-
+# 保存图像操作
 # %%
 # cv2.imwrite("enlighten.png", np.concatenate((img_bgr, img_attnmsr, img_mss), axis=1))
