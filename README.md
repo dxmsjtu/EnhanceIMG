@@ -29,8 +29,42 @@ pip install -r requirements.txt
 ![noises](https://cdn.nlark.com/yuque/0/2023/png/12831330/1691394027657-b96fd442-bf55-4b48-9f41-8b1cda87c1ea.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0
 )
 
+## Retinex部分解析
 
+具体论文文献已经在9.7号上传到仓库中,Retinex原论文.pdf。
 
+通过对Retinex算法的学习，进行简要的阶段性总结。
+
+Retinex就是一种用于图像增强的经典算法，旨在改善图像的亮度和对比度，特别是在低光照条件下。
+
+* * *
+
+Retinex算法的主要思路包括以下几个关键步骤：
+
+-   图像分解：首先，将原始图像分解为反射成分和光照成分的乘积。这一分解过程通常使用对数域进行，因为在对数域中，图像的光照和反射成分更容易分离。
+-   估计光照成分：Retinex算法通过对原始图像进行模糊处理来估计光照成分。模糊处理有助于捕捉图像的全局亮度信息，即光照成分。
+-   计算反射成分：将原始图像除以估计得到的光照成分，得到反射成分。反射成分反映了图像中的细节和纹理，通常包含有关物体的信息。
+-   增强反射成分：对反射成分进行增强，以提高图像的对比度和清晰度。这一步可以采用各种增强方法，例如直方图均衡化、对比度增强等。
+-   重构增强后的图像：将增强后的反射成分与光照成分相乘，以重构最终的增强图像。
+
+### __init__.py
+
+该程序文件提供多种处理函数，可以根据需要选择和组合，以实现不同级别的图像增强和色彩改进。
+
+-   replace_zeroes(data)：将输入数据中的所有零元素替换为非零最小元素，以避免在取对数时出现问题。
+-   single_scale_retinex(img, sigma)：实现单尺度Retinex算法，该算法通过对输入图像进行高斯模糊处理，然后计算对数域表示，最后计算图像的反射成分。返回Retinex增强后的图像。
+-   multi_scale_retinex(img, sigma_list)：实现多尺度Retinex算法，通过在多个尺度上应用Retinex算法，并将它们加权求和，最后得到多尺度Retinex增强后的图像。这可以提高对不同光照条件下图像的适应性。
+-   color_restoration(img, alpha, beta)：实现色彩还原，该算法通过计算图像的颜色分布以及原始颜色分布之间的差异来增强颜色。参数 alpha 和 beta 控制着颜色还原的强度。
+-   simplest_color_balance(img, low_clip, high_clip)：实现简单的白平衡，该算法通过将图像的RGB通道像素值分布压缩到相同的区间内来提高图像的颜色平衡。参数 low_clip 和 high_clip 控制着颜色平衡的强度。
+-   MSRCR(img, sigma_list, G, b, alpha, beta, low_clip, high_clip)：实现色彩恢复的多尺度Retinex算法，结合了多尺度Retinex和色彩还原，以提高图像的颜色质量和对比度。参数 G 和 b 控制了Retinex和色彩还原之间的权重。
+-   automated_MSRCR(img, sigma_list)：实现色彩增益加权的多尺度Retinex算法，该算法根据图像的像素分布自动调整颜色增益，以提高图像的质量和对比度。
+-   MSRCP(img, sigma_list, low_clip, high_clip)：实现带色彩还原的多尺度视网膜增强算法，结合了多尺度Retinex和色彩平衡，用于增强图像的颜色和对比度。参数 low_clip 和 high_clip 控制着颜色平衡的程度。
+
+### retinex_cv.py
+
+Retinex文件夹下retinex_cv,py程序文件。实现了多尺度图像增强（Multi-Scale Retinex with Color Restoration，MSRCR）和多尺度图像增强彩色恢复（Multi-Scale Retinex with Color Restoration and Principle Component Analysis，MSRCP）算法。 具体代码注释已经加入程序中，可以对应参考学习。
+
+###
 ## 目录结构
 
 ```
@@ -70,7 +104,7 @@ pip install -r requirements.txt
 |--- requirements.txt     # 依赖文件
 ```
 
-## 简单示例
+## 链路运行效果图
 
 ### 添加噪声
 
@@ -162,7 +196,7 @@ pip install -r requirements.txt
 
 ![cyclegan4](https://cdn.jsdelivr.net/gh/atomicoo/picture-bed@latest/2021/05/1620037334-cyclegan4.png)
 
-## 参考资料
+## 参考资料文献
 
 - Retinex
   - [Multiscale Retinex](http://www.ipol.im/pub/art/2014/107/)
@@ -190,10 +224,4 @@ pip install -r requirements.txt
 - [x] Pix2Pix 模型用于图像增强
 - [x] CycleGan 模型用于图像增强
 - [ ] SelfGAN 图像增强模型（Mine，完善中）
-
-## 欢迎交流
-
-- 微信号：YcZhouZy
-
-- 企鹅号：793071559
 

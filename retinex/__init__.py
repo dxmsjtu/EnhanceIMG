@@ -86,12 +86,13 @@ def MSRCR(img, sigma_list, G, b, alpha, beta, low_clip, high_clip):
 def automated_MSRCR(img, sigma_list):
     """色彩增益加权的多尺度Retinex算法
     """
-
+    # 实现了自动的多尺度Retinex算法，通过统计像素值的分布并调整像素范围，以提高图像的质量和对比度。
     img = np.float64(img) + 1.0
-
+    # 对输入图像进行多尺度Retinex处理
     img_retinex = multi_scale_retinex(img, sigma_list)
 
     for i in range(img_retinex.shape[2]):
+        # 将通道的像素值乘以100并将其转换为整数，然后统计每个像素值的出现次数。
         unique, count = np.unique(np.int32(img_retinex[:, :, i] * 100), return_counts=True)
         for u, c in zip(unique, count):
             if u == 0:
@@ -101,6 +102,8 @@ def automated_MSRCR(img, sigma_list):
         low_val = unique[0] / 100.0
         high_val = unique[-1] / 100.0
         for u, c in zip(unique, count):
+            # 如果某像素值为负且其出现次数小于零值出现次数的10 %，则将其视为低值。
+            # 如果某像素值为正且其出现次数小于零值出现次数的10 %，则将其视为高值。
             if u < 0 and c < zero_count * 0.1:
                 low_val = u / 100.0
             if u > 0 and c < zero_count * 0.1:
